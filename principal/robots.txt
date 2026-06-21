@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://wiserlearningcenter.github.io/web-oina/principal/sitemap.xml
