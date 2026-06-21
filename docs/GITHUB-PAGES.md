@@ -38,9 +38,9 @@ node .github/scripts/build-github-pages.mjs
 # Abrir .pages-site/index.html o servir la carpeta con un servidor estático
 ```
 
-La primera vez: en el repo → **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+La primera vez: en el repo → **Settings → Pages → Build and deployment → Deploy from a branch → Branch `gh-pages` / `/ (root)`**.
 
-También existen artifacts del workflow `Build sites` (`principal-out`, etc.) por 7 días.
+El workflow sube el preview a la rama `gh-pages` en cada push a `main`.
 
 ## Build local para Pages
 
