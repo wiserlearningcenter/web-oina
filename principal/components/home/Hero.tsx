@@ -1,0 +1,93 @@
+import Link from "next/link";
+
+import Image from "next/image";
+
+import { NaBrandLockupGroup } from "@/components/NaBrandLockupGroup";
+
+import { HOME_HERO_BACKGROUND } from "@/lib/hero-images";
+
+
+
+/** Overlay y CTA alineados con acropolis.org/es (Heket #086357 al 78%). */
+
+const HERO_OVERLAY = "bg-na-heket/[0.78]";
+
+const HERO_CTA =
+  "inline-flex items-center justify-center rounded-2xl border-2 border-white bg-na-heket/50 px-10 py-4 text-xs font-bold uppercase tracking-[0.22em] text-white transition hover:bg-na-heket/65 sm:rounded-3xl sm:px-12 sm:py-[1.125rem] sm:text-sm";
+
+
+
+export function Hero() {
+
+  return (
+
+    <section className="relative flex min-h-screen items-center justify-center overflow-x-hidden">
+
+      <div
+
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat md:bg-fixed"
+
+        style={{ backgroundImage: `url(${HOME_HERO_BACKGROUND.src})` }}
+
+        aria-hidden
+
+      />
+
+      <Image
+
+        src={HOME_HERO_BACKGROUND.src}
+
+        alt={HOME_HERO_BACKGROUND.alt}
+
+        fill
+
+        priority
+
+        unoptimized
+
+        className="object-cover object-center md:hidden"
+
+        sizes="100vw"
+
+      />
+
+      <div
+
+        className={`pointer-events-none absolute inset-0 ${HERO_OVERLAY}`}
+
+        aria-hidden
+
+      />
+
+
+
+      <div className="relative mx-auto flex w-full max-w-[700px] flex-col items-center overflow-visible px-5 pb-12 pt-[150px] text-center md:px-12 md:pb-[50px] md:pt-[100px]">
+
+        <NaBrandLockupGroup
+          lockup="oinadom"
+          variant="white"
+          priority
+          align="center"
+          size="hero"
+          descriptorProminence="hero"
+          maxWidthClass="max-w-[min(94vw,28rem)]"
+        />
+
+        <Link
+          href="/quienes-somos"
+          className={`${HERO_CTA} pointer-events-auto mt-8 sm:mt-10`}
+        >
+
+          Qué es Nueva Acrópolis
+
+        </Link>
+
+      </div>
+
+    </section>
+
+  );
+
+}
+
+

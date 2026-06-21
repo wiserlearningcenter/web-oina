@@ -1,0 +1,141 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { ArrowDown, BookOpen, Sparkles } from "lucide-react";
+import { EditorialHeroProductCarousel } from "@/components/EditorialHeroProductCarousel";
+import { loadStoreBooksCatalog, resolveStoreBookCover } from "@/lib/bookstore";
+import { useEditorialWelcome } from "@/lib/cms/hooks";
+import { useEditorialHeroImages } from "@/lib/cms/hooks";
+import {
+  buildBookHeroSlide,
+  mergeHeroProductSlides,
+  type HeroProductSlide,
+} from "@/lib/editorial-hero-products";
+import { navigateEditorialHash } from "@/lib/editorial-navigation";
+
+export function EditorialWelcomeHero() {
+  const welcome = useEditorialWelcome();
+  const heroImages = useEditorialHeroImages();
+  const taglineItems = welcome.tagline
+    .split("·")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  const [bookSlide, setBookSlide] = useState<HeroProductSlide | null>(null);
+
+  const heroFallbackSrc = heroImages[0]?.src ?? "";
+
+  useEffect(() => {
+    let cancelled = false;
+    loadStoreBooksCatalog("impreso")
+      .then((items) => {
+        if (cancelled) return;
+        const book = items.find((b) => resolveStoreBookCover(b));
+        if (!book) return;
+        const src = resolveStoreBookCover(book);
+        if (!src) return;
+        setBookSlide(
+          buildBookHeroSlide({
+            src,
+            alt: `Portada: ${book.title}`,
+            title: book.title,
+          }),
+        );
+      })
+      .catch(() => {
+        if (cancelled || !heroFallbackSrc) return;
+        setBookSlide(
+          buildBookHeroSlide({
+            src: heroFallbackSrc,
+            alt: heroImages[0]?.alt ?? "Libros de filosofía y cultura",
+            title: "Libros de filosofía y cultura",
+          }),
+        );
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [heroFallbackSrc]);
+
+  const productSlides = useMemo(
+    () => mergeHeroProductSlides(bookSlide),
+    [bookSlide],
+  );
+
+  return (
+    <section
+      className="editorial-welcome relative overflow-hidden border-b border-na-editorial/10 bg-white"
+      aria-labelledby="editorial-welcome-title"
+    >
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_0%,rgba(234,118,4,0.07),transparent_45%)]"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_90%_100%,rgba(255,201,13,0.1),transparent_40%)]"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute bottom-6 right-[10%] hidden text-[7rem] font-black leading-none text-na-editorial/[0.05] sm:block"
+        aria-hidden
+      >
+        Φ
+      </div>
+
+      <div className="relative mx-auto max-w-6xl px-4 pb-14 pt-10 sm:px-6 sm:pb-16 sm:pt-12">
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10">
+          <div>
+            <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.32em] text-na-editorial">
+              <Sparkles className="h-3.5 w-3.5" aria-hidden />
+              Editorial · Librería
+            </p>
+            <h1
+              id="editorial-welcome-title"
+              className="mt-4 text-balance text-3xl font-black leading-tight text-na-ink sm:text-4xl lg:text-[2.65rem]"
+            >
+              {welcome.title}
+            </h1>
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-na-muted sm:text-lg">
+              {welcome.lede}
+            </p>
+
+            <ul className="mt-6 flex flex-wrap gap-2">
+              {taglineItems.map((item) => (
+                <li
+                  key={item}
+                  className="rounded-full border border-na-editorial/20 bg-na-editorial/[0.06] px-3.5 py-1.5 text-xs font-bold tracking-wide text-na-editorialDark"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/conoce-nueva-acropolis"
+                className="inline-flex items-center gap-2 rounded-full bg-na-editorial px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-na-editorial/25 transition hover:bg-na-editorialDark"
+              >
+                <BookOpen className="h-4 w-4" aria-hidden />
+                Conoce Nueva Acrópolis
+              </Link>
+              <button
+                type="button"
+                onClick={() => navigateEditorialHash("explorar-catalogos")}
+                className="inline-flex items-center gap-2 rounded-full border border-na-editorial/30 bg-white px-5 py-2.5 text-sm font-bold text-na-editorialDark transition hover:border-na-editorial/50 hover:bg-na-editorial/[0.04]"
+              >
+                Explorar catálogos
+                <ArrowDown className="h-4 w-4" aria-hidden />
+              </button>
+            </div>
+          </div>
+
+          <div className="relative mx-auto w-full max-w-sm lg:max-w-none">
+            <div className="rounded-[1.75rem] border border-na-editorial/12 bg-white p-5 shadow-[0_20px_50px_rgba(234,118,4,0.08)] sm:p-6">
+              <EditorialHeroProductCarousel slides={productSlides} theme="light" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Next.js / builds
+.next/
+out/
+deploy/
+upload-cpanel-*/
+
+# Env and secrets
+.env
+.env.local
+.env.*.local
+editor/api/config.php
+editor/data/auth/users.json
+editor/data/system/smtp.json
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+
+# Local backups (full editor snapshot stays on disk only)
+backups/
+
+# Root-level assets (not source code)
+/*.pdf
+/*.mp4
+/*.png
+/*.jpg
+/*.gsp
+/_deploy-cpanel/
+/scripts/
+/tmp-*
+
+# Cursor local state
+.cursor/
+
+# Playwright / test artifacts
+test-results/
+playwright-report/

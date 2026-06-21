@@ -1,0 +1,5 @@
+<?php
+/** Copiar a config.local.php (no versionar). Solo desarrollo local. */
+return [
+    'smtp_password' => 'CONTRASEÑA_SMTP',
+];

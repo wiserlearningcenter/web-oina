@@ -1,0 +1,16 @@
+<?php
+/** Copiar a config.php y editar. NO subir config.php a git público. */
+return [
+    'admin_password' => 'CAMBIA_ESTA_CONTRASEÑA',
+    'data_root' => __DIR__ . '/../data',
+    /** Contraseña SMTP (mismo servidor que Biblioteca). También editable en el panel del editor. */
+    'smtp_password' => 'CONTRASEÑA_SMTP',
+    'allowed_origins' => [
+        'https://editor.acropolis.adesa.com.do',
+        'https://acropolis.adesa.com.do',
+        'https://civis.acropolis.adesa.com.do',
+        'https://civis.acropolis.org.do',
+        'http://localhost:3200',
+        'http://127.0.0.1:3200',
+    ],
+];

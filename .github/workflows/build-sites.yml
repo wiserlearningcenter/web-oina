@@ -1,0 +1,43 @@
+name: Build sites
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        site: [principal, civis, tienda]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: ${{ matrix.site }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ matrix.site }}
+        run: npm ci
+
+      - name: Build static export
+        working-directory: ${{ matrix.site }}
+        env:
+          NEXT_PUBLIC_SITE_URL: https://example.org
+          NEXT_PUBLIC_CMS_URL: https://example.org/api
+          NEXT_PUBLIC_STORE_API_URL: https://example.org
+          NEXT_PUBLIC_PRINCIPAL_URL: https://example.org
+          NEXT_PUBLIC_CIVIS_URL: https://civis.example.org
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.site }}-out
+          path: ${{ matrix.site }}/out
+          retention-days: 7

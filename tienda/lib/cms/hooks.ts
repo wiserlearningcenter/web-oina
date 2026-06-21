@@ -1,0 +1,177 @@
+"use client";
+
+import {
+  mergeEditorialBookFilters,
+  mergeEditorialDigitalBooks,
+  mergeEditorialDondePage,
+  mergeEditorialFooterTagline,
+  mergeEditorialHeaderNav,
+  mergeEditorialHeroImages,
+  mergeEditorialHomeCards,
+  mergeEditorialQuienesSomosLibreria,
+  mergeEditorialQuienesSomosNa,
+  mergeEditorialRegaloCategories,
+  mergeEditorialRegalos,
+  mergeEditorialRevistas,
+  mergeEditorialSedes,
+  mergeEditorialShopCategories,
+  mergeEditorialStorePhoto,
+  mergeEditorialVisit,
+  mergeEditorialWelcome,
+  DIGITAL_BOOK_GROUPS,
+  EDITORIAL_DONDE,
+  EDITORIAL_HEADER_NAV,
+  EDITORIAL_HOME_CARDS,
+  EDITORIAL_LIBRERIA,
+  EDITORIAL_QUIENES_SOMOS,
+  EDITORIAL_SEDES,
+  EDITORIAL_STORE_PHOTO,
+  EDITORIAL_VISIT,
+  EDITORIAL_WELCOME,
+  EDITORIAL_HERO_IMAGES,
+  REGALO_CATEGORIES,
+  REGALOS,
+  REVISTAS,
+} from "@/lib/cms/merge-content";
+import { isCmsEnabled, useCmsDocument } from "@/lib/cms/provider";
+import { useCmsHydrated } from "@/lib/cms/hydration";
+
+export { useCmsHydrated } from "@/lib/cms/hydration";
+
+export function useEditorialHeaderNav() {
+  const cms = useCmsDocument();
+  const hydrated = useCmsHydrated();
+  if (!hydrated) return EDITORIAL_HEADER_NAV;
+  if (!isCmsEnabled()) return EDITORIAL_HEADER_NAV;
+  return mergeEditorialHeaderNav(EDITORIAL_HEADER_NAV, cms);
+}
+
+export function useEditorialWelcome() {
+  const cms = useCmsDocument();
+  const hydrated = useCmsHydrated();
+  if (!hydrated) return { ...EDITORIAL_WELCOME };
+  if (!isCmsEnabled()) return { ...EDITORIAL_WELCOME };
+  return mergeEditorialWelcome(EDITORIAL_WELCOME, cms);
+}
+
+export function useEditorialHomeCards() {
+  const cms = useCmsDocument();
+  const hydrated = useCmsHydrated();
+  if (!hydrated) return EDITORIAL_HOME_CARDS;
+  if (!isCmsEnabled()) return EDITORIAL_HOME_CARDS;
+  return mergeEditorialHomeCards(EDITORIAL_HOME_CARDS, cms);
+}
+
+export function useEditorialFooterTagline() {
+  const cms = useCmsDocument();
+  const hydrated = useCmsHydrated();
+  if (!hydrated) {
+    return mergeEditorialFooterTagline(null);
+  }
+  if (!isCmsEnabled()) return mergeEditorialFooterTagline(null);
+  return mergeEditorialFooterTagline(cms);
+}
+
+export function useEditorialQuienesSomos() {
+  const cms = useCmsDocument();
+  const hydrated = useCmsHydrated();
+  if (!hydrated) {
+    return {
+      libreria: EDITORIAL_LIBRERIA,
+      nuevaAcropolis: EDITORIAL_QUIENES_SOMOS,
+    };
+  }
+  if (!isCmsEnabled()) {
+    return {
+      libreria: EDITORIAL_LIBRERIA,
+      nuevaAcropolis: EDITORIAL_QUIENES_SOMOS,
+    };
+  }
+  return {
+    libreria: mergeEditorialQuienesSomosLibreria(cms),
+    nuevaAcropolis: mergeEditorialQuienesSomosNa(cms),
+  };
+}
+
+export function useEditorialDonde() {
+  const cms = useCmsDocument();
+  const hydrated = useCmsHydrated();
+  if (!hydrated) {
+    return {
+      visit: EDITORIAL_VISIT,
+      page: EDITORIAL_DONDE,
+      sedes: EDITORIAL_SEDES,
+      storePhoto: EDITORIAL_STORE_PHOTO,
+    };
+  }
+  if (!isCmsEnabled()) {
+    return {
+      visit: EDITORIAL_VISIT,
+      page: EDITORIAL_DONDE,
+      sedes: EDITORIAL_SEDES,
+      storePhoto: EDITORIAL_STORE_PHOTO,
+    };
+  }
+  return {
+    visit: mergeEditorialVisit(cms),
+    page: mergeEditorialDondePage(cms),
+    sedes: mergeEditorialSedes(EDITORIAL_SEDES, cms),
+    storePhoto: mergeEditorialStorePhoto(cms),
+  };
+}
+
+export function useEditorialRevistas() {
+  const cms = useCmsDocument();
+  const hydrated = useCmsHydrated();
+  if (!hydrated) return REVISTAS;
+  if (!isCmsEnabled()) return REVISTAS;
+  return mergeEditorialRevistas(REVISTAS, cms);
+}
+
+export function useEditorialRegalos() {
+  const cms = useCmsDocument();
+  const hydrated = useCmsHydrated();
+  if (!hydrated) return REGALOS;
+  if (!isCmsEnabled()) return REGALOS;
+  return mergeEditorialRegalos(REGALOS, cms);
+}
+
+export function useEditorialRegaloCategories() {
+  const cms = useCmsDocument();
+  const hydrated = useCmsHydrated();
+  if (!hydrated) return REGALO_CATEGORIES;
+  if (!isCmsEnabled()) return REGALO_CATEGORIES;
+  return mergeEditorialRegaloCategories(REGALO_CATEGORIES, cms);
+}
+
+export function useEditorialShopCategories() {
+  const cms = useCmsDocument();
+  const hydrated = useCmsHydrated();
+  if (!hydrated) return mergeEditorialShopCategories(null);
+  if (!isCmsEnabled()) return mergeEditorialShopCategories(null);
+  return mergeEditorialShopCategories(cms);
+}
+
+export function useEditorialBookFilters() {
+  const cms = useCmsDocument();
+  const hydrated = useCmsHydrated();
+  if (!hydrated) return mergeEditorialBookFilters(null);
+  if (!isCmsEnabled()) return mergeEditorialBookFilters(null);
+  return mergeEditorialBookFilters(cms);
+}
+
+export function useEditorialDigitalBooks() {
+  const cms = useCmsDocument();
+  const hydrated = useCmsHydrated();
+  if (!hydrated) return DIGITAL_BOOK_GROUPS;
+  if (!isCmsEnabled()) return DIGITAL_BOOK_GROUPS;
+  return mergeEditorialDigitalBooks(DIGITAL_BOOK_GROUPS, cms);
+}
+
+export function useEditorialHeroImages() {
+  const cms = useCmsDocument();
+  const hydrated = useCmsHydrated();
+  if (!hydrated) return EDITORIAL_HERO_IMAGES;
+  if (!isCmsEnabled()) return EDITORIAL_HERO_IMAGES;
+  return mergeEditorialHeroImages(EDITORIAL_HERO_IMAGES, cms);
+}
